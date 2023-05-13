@@ -91,7 +91,7 @@ void (async function main() {
 
   fs.writeFileSync(
     rootPath('release/package.json'),
-    JSON.stringify(packageJson, null, 2),
+    JSON.stringify(packageJson, null, 2) + '\n',
     { encoding: 'utf-8' }
   )
 })()

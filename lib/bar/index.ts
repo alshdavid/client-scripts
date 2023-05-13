@@ -1,4 +1,4 @@
-const bar: string = 'hi'
+const bar: string = 'bar'
 
 console.log(bar)
 

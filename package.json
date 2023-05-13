@@ -5,11 +5,15 @@
   "scripts": {
     "prettier": "npx prettier -w .",
     "build": "node ./.github/scripts/cmd/build.mjs",
-    "clean": "rm -rf release"
+    "clean": "rm -rf release",
+    "serve": "npx http-server -c=-1 --cors=true ./release/umd",
+    "watch": "npx nodemon --watch \"./lib/**/*\" --watch \"./platform/**/*\" --signal SIGTERM --ext \"*\" --exec \"node ./.github/scripts/cmd/build.mjs || exit 1\""
   },
   "devDependencies": {
     "@rspack/core": "^0.1.10",
     "@types/node": "^20.1.3",
+    "http-server": "^14.1.1",
+    "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "swc-loader": "^0.2.3",
     "ts-loader": "^9.4.2",

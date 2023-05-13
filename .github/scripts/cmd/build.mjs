@@ -82,10 +82,10 @@ void (async function main() {
 
   for (const foldername of fs.readdirSync(rootPath('lib'))) {
     packageJson.exports[`./${foldername}`] = {
-      types: `./types/${foldername}/index.d.ts`,
+      types: `./types/${foldername}/lib/index.d.ts`,
+      import: `./esm/${foldername}/lib/index.js`,
+      require: `./require/${foldername}/lib/index.js`,
       umd: `./umd/${foldername}/index.js`,
-      import: `./esm/${foldername}/index.js`,
-      require: `./require/${foldername}/index.js`
     }
   }
 

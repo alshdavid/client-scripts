@@ -2,7 +2,8 @@ import * as child_process from 'node:child_process'
 import * as path from 'node:path'
 import * as fs from 'node:fs'
 import * as url from 'node:url'
-import * as rspack from '@rspack/core'
+// import * as rspack from '@rspack/core'
+import webpack from 'webpack'
 
 /** @type {(v?: string) => string} */
 function rootPath(filepath = '') {
@@ -16,37 +17,50 @@ void (async function main() {
     fs.rmSync(rootPath('release'), { recursive: true })
   }
 
-  child_process.execSync(
-    'npx tsc --outDir release/types --declaration true --emitDeclarationOnly true',
-    {
-      cwd: rootPath(),
-      stdio: 'inherit'
-    }
-  )
+  // child_process.execSync(
+  //   'npx tsc --outDir release/types --declaration true --emitDeclarationOnly true',
+  //   {
+  //     cwd: rootPath(),
+  //     stdio: 'inherit'
+  //   }
+  // )
 
-  child_process.execSync('npx tsc --outDir release/esm', {
-    cwd: rootPath(),
-    stdio: 'inherit'
-  })
+  // child_process.execSync('npx tsc --outDir release/esm', {
+  //   cwd: rootPath(),
+  //   stdio: 'inherit'
+  // })
 
   child_process.execSync('npx tsc --outDir release/cjs --module CommonJS', {
     cwd: rootPath(),
     stdio: 'inherit'
   })
 
-  fs.mkdirSync(rootPath(`release/umd`))
+  fs.mkdirSync(rootPath(`release/umd`), { recursive: true })
 
-  for (const foldername of fs.readdirSync(rootPath('lib'))) {
-    const compiler = rspack.rspack({
+  const snakeToCamel = (/** @type {string}*/ str) =>
+    str
+      .toLowerCase()
+      .replace(/([-_][a-z])/g, (group) =>
+        group.toUpperCase().replace('-', '').replace('_', '')
+      )
+
+  for (const foldernameRaw of fs.readdirSync(rootPath('lib'))) {
+    const foldername = snakeToCamel(foldernameRaw)
+
+    // const compiler = rspack.rspack({
+    const compiler = webpack({
       mode: 'production',
       devtool: false,
-      entry: rootPath(`lib/${foldername}/index.ts`),
+      entry: {
+        [foldername]: rootPath(`lib/${foldernameRaw}/index.ts`)
+      },
       output: {
         filename: 'index.js',
-        path: rootPath(`release/umd/${foldername}`),
+        path: rootPath(`release/umd/${foldernameRaw}`),
+        publicPath: '',
         library: {
           type: 'umd',
-          name: 'alshdavid_client_scripts'
+          name: ['acs', foldername]
         }
       },
       module: {
@@ -54,20 +68,25 @@ void (async function main() {
           {
             test: /\.tsx?$/,
             use: 'swc-loader'
+          },
+          {
+            test: /\.jsx?$/,
+            use: 'swc-loader'
           }
         ]
       },
       resolve: {
         extensions: ['.tsx', '.ts', '.js', '.mjs'],
         alias: {}
-      }
+      },
+      externals: [/^node:.*/i]
     })
 
-    const stat =
-      await new Promise((resolve, reject) =>
-        compiler.run((err, stats) =>
-          err ? reject(err) : stats ? resolve(stats) : reject()
-        ))
+    const stat = await new Promise((resolve, reject) =>
+      compiler.run((err, stats) =>
+        err ? reject(err) : stats ? resolve(stats) : reject()
+      )
+    )
 
     console.log(stat.toString())
   }

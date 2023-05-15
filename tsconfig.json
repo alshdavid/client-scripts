@@ -7,7 +7,7 @@
     "declaration": false,
     "strict": true,
     "lib": ["DOM", "ESNext"],
-    "types": []
+    "types": ["node"]
   },
   "include": ["lib/**/*.ts", "platform/**/*.ts"]
 }

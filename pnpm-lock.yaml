@@ -10,18 +10,12 @@ devDependencies:
   '@rspack/core':
     specifier: ^0.1.10
     version: 0.1.10(@swc/core@1.3.58)
-  '@types/chalk':
-    specifier: ^2.2.0
-    version: 2.2.0
   '@types/mime-types':
     specifier: ^2.1.1
     version: 2.1.1
   '@types/node':
     specifier: ^20.1.4
     version: 20.1.4
-  chalk:
-    specifier: ^4.0.0
-    version: 4.0.0
   http-server:
     specifier: ^14.1.1
     version: 14.1.1
@@ -1446,13 +1440,6 @@ packages:
       '@types/node': 20.1.4
     dev: true
 
-  /@types/chalk@2.2.0:
-    resolution: {integrity: sha512-1zzPV9FDe1I/WHhRkf9SNgqtRJWZqrBWgu7JGveuHmmyR9CnAPCie2N/x+iHrgnpYBIcCJWHBoMRv2TRWktsvw==}
-    deprecated: This is a stub types definition for chalk (https://github.com/chalk/chalk). chalk provides its own type definitions, so you don't need @types/chalk installed!
-    dependencies:
-      chalk: 4.0.0
-    dev: true
-
   /@types/connect-history-api-fallback@1.5.0:
     resolution: {integrity: sha512-4x5FkPpLipqwthjPsF7ZRbOv3uoLUFkTA9G9v583qi4pACvq0uTELrB8OLUzPWUI4IJIyvM85vzkV1nyiI2Lig==}
     dependencies:
@@ -2017,14 +2004,6 @@ packages:
 
   /caniuse-lite@1.0.30001487:
     resolution: {integrity: sha512-83564Z3yWGqXsh2vaH/mhXfEM0wX+NlBCm1jYHOb97TrTWJEmPTccZgeLTPBUUb0PNVo+oomb7wkimZBIERClA==}
-    dev: true
-
-  /chalk@4.0.0:
-    resolution: {integrity: sha512-N9oWFcegS0sFr9oh1oz2d7Npos6vNoWW9HvtCg5N1KRFpUhaAhvTv5Y58g880fZaEYSNm3qDz8SU1UrGvp+n7A==}
-    engines: {node: '>=10'}
-    dependencies:
-      ansi-styles: 4.3.0
-      supports-color: 7.2.0
     dev: true
 
   /chalk@4.1.2:

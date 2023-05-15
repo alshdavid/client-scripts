@@ -15,13 +15,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Upload HTML to AWS
+      - name: Build
         run: |
           npm install -g pnpm
           pnpm install
           pnpm run build
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+      - name: Publish to NPM
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> $HOME/.npmrc
           pnpm publish --access public
+      - name: Upload to AWS
+        run: |
+          echo "coming soon"
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,20 +1,27 @@
 import { ILocalStorageAsync } from "./local-storage-interface"
 
-const DATABASE_KEY = 'LocalStorageAsync.DatabaseKey'
-const DATABASE_STORE_KEY = 'LocalStorageAsync.DatabaseStoreKey'
+const DATABASE_KEY = 'LocalStorageAsync'
+const DATABASE_STORE_KEY = 'default'
 
 export class LocalStorageAsyncBrowser implements ILocalStorageAsync {
   #database: Promise<IDBDatabase>
 
-  constructor() {
+  constructor(
+    storeKey: string = ''
+  ) {
+    let databaseName = DATABASE_KEY
+    if (storeKey) {
+      databaseName = `${DATABASE_KEY}:${storeKey}`
+    }
+    
+    const oRequest = indexedDB.open(databaseName)
+    
+    oRequest.onupgradeneeded = function () {
+      const db = oRequest.result
+      db.createObjectStore(DATABASE_STORE_KEY)
+    }
+    
     this.#database = new Promise<IDBDatabase>((resolve, reject) => {
-      const oRequest = indexedDB.open(DATABASE_KEY)
-
-      oRequest.onupgradeneeded = function () {
-        const db = oRequest.result
-        db.createObjectStore(DATABASE_STORE_KEY)
-      }
-
       oRequest.onsuccess = function () {
         const db = oRequest.result
         resolve(db)

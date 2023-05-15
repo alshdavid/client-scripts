@@ -3,15 +3,22 @@ import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import * as crypto from 'node:crypto'
 import { ILocalStorageAsync } from './local-storage-interface'
+import { sha1 } from '../crypto'
 
-function sha1(input: string): string {
-  return crypto.createHash('sha1').update(JSON.stringify(input)).digest('hex')
-}
+const DATABASE_STORE_KEY = 'LocalStorageAsync.DatabaseStoreKey'
 
 const tempDir = process.env.TEMP_DIR || path.join(process.cwd(), '.temp')
 const store = path.join(tempDir, 'local-storage')
 
 export class LocalStorageAsyncNode implements ILocalStorageAsync {
+  #storeKey: string
+
+  constructor(
+    storeKey: string = '',
+  ) {
+    this.#storeKey = storeKey
+  }
+  
   listItems(): Promise<string[]> {
     return fs.readdir(store)
   }
@@ -21,8 +28,8 @@ export class LocalStorageAsyncNode implements ILocalStorageAsync {
   }
 
   async getItem(key: string): Promise<string | null> {
-    const keySlug = sha1(key)
-    const target = path.join(store, keySlug)
+    const keySlug = await sha1(key)
+    const target = path.join(store, this.#storeKey, keySlug)
     if (!fsSync.existsSync(target)) {
       return null
     }
@@ -30,8 +37,8 @@ export class LocalStorageAsyncNode implements ILocalStorageAsync {
   }
 
   async setItem(key: string, value: string): Promise<void> {
-    const keySlug = sha1(key)
-    const target = path.join(store, keySlug)
+    const keySlug = await sha1(key)
+    const target = path.join(store, this.#storeKey, keySlug)
     if (!fsSync.existsSync(store)) {
       await fs.mkdir(store, { recursive: true })
     }
@@ -39,8 +46,8 @@ export class LocalStorageAsyncNode implements ILocalStorageAsync {
   }
 
   async removeItem(key: string): Promise<void> {
-    const keySlug = sha1(key)
-    const target = path.join(store, keySlug)
+    const keySlug = await sha1(key)
+    const target = path.join(store, this.#storeKey, keySlug)
     if (fsSync.existsSync(target)) {
       await fs.rm(target)
     }

@@ -5,12 +5,14 @@ import { ILocalStorageAsync } from './local-storage-interface'
 export class LocalStorageAsync implements ILocalStorageAsync {
   #localStorageAsync: ILocalStorageAsync
 
-  constructor() {
+  constructor(
+    storeKey?: string
+  ) {
     if (isNode()) {
       const { LocalStorageAsyncNode } = require('./local-storage-node')
-      this.#localStorageAsync = new LocalStorageAsyncNode()
+      this.#localStorageAsync = new LocalStorageAsyncNode(storeKey)
     } else {
-      this.#localStorageAsync = new LocalStorageAsyncBrowser()
+      this.#localStorageAsync = new LocalStorageAsyncBrowser(storeKey)
     }
   }
 

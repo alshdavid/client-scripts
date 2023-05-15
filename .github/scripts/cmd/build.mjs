@@ -17,18 +17,18 @@ void (async function main() {
     fs.rmSync(rootPath('release'), { recursive: true })
   }
 
-  // child_process.execSync(
-  //   'npx tsc --outDir release/types --declaration true --emitDeclarationOnly true',
-  //   {
-  //     cwd: rootPath(),
-  //     stdio: 'inherit'
-  //   }
-  // )
+  child_process.execSync(
+    'npx tsc --outDir release/types --declaration true --emitDeclarationOnly true',
+    {
+      cwd: rootPath(),
+      stdio: 'inherit'
+    }
+  )
 
-  // child_process.execSync('npx tsc --outDir release/esm', {
-  //   cwd: rootPath(),
-  //   stdio: 'inherit'
-  // })
+  child_process.execSync('npx tsc --outDir release/esm', {
+    cwd: rootPath(),
+    stdio: 'inherit'
+  })
 
   child_process.execSync('npx tsc --outDir release/cjs --module CommonJS', {
     cwd: rootPath(),
@@ -44,50 +44,98 @@ void (async function main() {
         group.toUpperCase().replace('-', '').replace('_', '')
       )
 
+  let entry = ``
+
   for (const foldernameRaw of fs.readdirSync(rootPath('lib'))) {
     const foldername = snakeToCamel(foldernameRaw)
-
-    // const compiler = rspack.rspack({
-    const compiler = webpack({
-      mode: 'production',
-      devtool: false,
-      entry: {
-        [foldername]: rootPath(`lib/${foldernameRaw}/index.ts`)
-      },
-      output: {
-        filename: 'index.js',
-        path: rootPath(`release/umd/${foldernameRaw}`),
-        publicPath: '',
-        library: {
-          type: 'umd',
-          name: ['acs', foldername]
-        }
-      },
-      module: {
-        rules: [
-          {
-            test: /\.tsx?$/,
-            use: 'swc-loader'
-          },
-          {
-            test: /\.jsx?$/,
-            use: 'swc-loader'
-          }
-        ]
-      },
-      resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.mjs'],
-        alias: {}
-      },
-      externals: [/^node:.*/i]
-    })
-
-    const stat = await new Promise((resolve, reject) =>
-      compiler.run((err, stats) =>
-        err ? reject(err) : stats ? resolve(stats) : reject()
-      )
-    )
-
-    console.log(stat.toString())
+    entry += `export * as ${foldername} from './lib/${foldernameRaw}/index.ts';\n`
   }
+
+  // const compiler = rspack.rspack({
+  const compiler = webpack({
+    mode: 'production',
+    devtool: false,
+    entry: `data:text/javascript;base64,${Buffer.from(entry).toString('base64')}`,
+    output: {
+      filename: 'index.js',
+      path: rootPath(`release/umd`),
+      publicPath: '',
+      library: {
+        type: 'umd',
+        name: ['acs']
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'swc-loader'
+        },
+        {
+          test: /\.jsx?$/,
+          use: 'swc-loader'
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js', '.mjs'],
+      alias: {}
+    },
+    externals: [/^node:.*/i]
+  })
+
+  const stat = await new Promise((resolve, reject) =>
+    compiler.run((err, stats) =>
+      err ? reject(err) : stats ? resolve(stats) : reject()
+    )
+  )
+
+  console.log(stat.toString())
+
+  // for (const foldernameRaw of fs.readdirSync(rootPath('lib'))) {
+  //   const foldername = snakeToCamel(foldernameRaw)
+
+  //   // const compiler = rspack.rspack({
+  //   const compiler = webpack({
+  //     mode: 'production',
+  //     devtool: false,
+  //     entry: {
+  //       [foldername]: rootPath(`lib/${foldernameRaw}/index.ts`)
+  //     },
+  //     output: {
+  //       filename: 'index.js',
+  //       path: rootPath(`release/umd/${foldernameRaw}`),
+  //       publicPath: '',
+  //       library: {
+  //         type: 'umd',
+  //         name: ['acs', foldername]
+  //       }
+  //     },
+  //     module: {
+  //       rules: [
+  //         {
+  //           test: /\.tsx?$/,
+  //           use: 'swc-loader'
+  //         },
+  //         {
+  //           test: /\.jsx?$/,
+  //           use: 'swc-loader'
+  //         }
+  //       ]
+  //     },
+  //     resolve: {
+  //       extensions: ['.tsx', '.ts', '.js', '.mjs'],
+  //       alias: {}
+  //     },
+  //     externals: [/^node:.*/i]
+  //   })
+
+  //   const stat = await new Promise((resolve, reject) =>
+  //     compiler.run((err, stats) =>
+  //       err ? reject(err) : stats ? resolve(stats) : reject()
+  //     )
+  //   )
+
+  //   console.log(stat.toString())
+  // }
 })()

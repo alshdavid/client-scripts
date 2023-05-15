@@ -23,7 +23,7 @@ jobs:
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> $HOME/.npmrc
-          pnpm publish --access public
+          pnpm publish --access public --no-git-checks
       - name: Upload to AWS
         run: |
           echo "coming soon"

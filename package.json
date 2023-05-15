@@ -7,7 +7,6 @@
       "types": "./release/types/*/lib/index.d.ts",
       "import": "./release/esm/*/lib/index.js",
       "require": "./release/require/*/lib/index.js",
-      "umd": "./release/umd/*/index.js"
     },
     "./lib/*": {
       "types": "./release/types/*/lib/index.d.ts",

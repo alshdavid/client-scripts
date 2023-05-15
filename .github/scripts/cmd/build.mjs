@@ -71,27 +71,4 @@ void (async function main() {
 
     console.log(stat.toString())
   }
-
-  const packageJson = JSON.parse(
-    fs.readFileSync(rootPath('package.json'), { encoding: 'utf-8' })
-  )
-
-  delete packageJson.scripts
-  delete packageJson.devDependencies
-  packageJson.exports = {}
-
-  for (const foldername of fs.readdirSync(rootPath('lib'))) {
-    packageJson.exports[`./${foldername}`] = {
-      types: `./types/${foldername}/lib/index.d.ts`,
-      import: `./esm/${foldername}/lib/index.js`,
-      require: `./require/${foldername}/lib/index.js`,
-      umd: `./umd/${foldername}/index.js`,
-    }
-  }
-
-  fs.writeFileSync(
-    rootPath('release/package.json'),
-    JSON.stringify(packageJson, null, 2) + '\n',
-    { encoding: 'utf-8' }
-  )
 })()

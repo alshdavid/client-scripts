@@ -1,7 +1,25 @@
 {
   "name": "@alshdavid/client-scripts",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "license": "MIT",
+  "exports": {
+    "./*": {
+      "types": "./release/types/*/lib/index.d.ts",
+      "import": "./release/esm/*/lib/index.js",
+      "require": "./release/require/*/lib/index.js",
+      "umd": "./release/umd/*/index.js"
+    },
+    "./lib/*": {
+      "types": "./release/types/*/lib/index.d.ts",
+      "import": "./release/esm/*/lib/index.js",
+      "require": "./release/require/*/lib/index.js"
+    },
+    "./platform/*": {
+      "types": "./release/types/*/platform/index.d.ts",
+      "import": "./release/esm/*/platform/index.js",
+      "require": "./release/require/*/platform/index.js"
+    }
+  },
   "scripts": {
     "prettier": "npx prettier -w .",
     "build": "node ./.github/scripts/cmd/build.mjs",
@@ -18,5 +36,10 @@
     "swc-loader": "^0.2.3",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.4"
-  }
+  },
+  "files": [
+    "./release",
+    "./package.json",
+    "./LICENSE"
+  ]
 }

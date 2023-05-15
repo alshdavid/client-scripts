@@ -1,4 +1,4 @@
-export * from './remove-naughty-characters'
+export * from './strip-naughty-characters'
 export * from './slugity'
 export * from './snake-to-camel'
 export * from './strip-html'

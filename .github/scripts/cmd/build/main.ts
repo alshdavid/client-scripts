@@ -1,48 +1,44 @@
 import * as child_process from 'node:child_process'
-import * as path from 'node:path'
 import * as fs from 'node:fs'
 import * as webpack from 'webpack'
-
-function rootPath(filepath: string = '') {
-  return path.join(__dirname, '../../../../', filepath)
-}
+import { Directories } from '../../platform/directores'
 
 void (async function main() {
-  if (fs.existsSync(rootPath('release'))) {
-    fs.rmSync(rootPath('release'), { recursive: true })
+  if (fs.existsSync(Directories['~/release'])) {
+    fs.rmSync(Directories['~/release'], { recursive: true })
   }
 
   console.log('Building Types')
   child_process.execSync(
     'npx tsc --outDir release/types --declaration true --emitDeclarationOnly true',
     {
-      cwd: rootPath(),
+      cwd: Directories['~'],
       stdio: 'inherit'
     }
   )
 
   console.log('Building ESM')
   child_process.execSync('npx tsc --outDir release/esm', {
-    cwd: rootPath(),
+    cwd: Directories['~'],
     stdio: 'inherit'
   })
 
   console.log('Building CommonJS')
   child_process.execSync('npx tsc --outDir release/cjs --module CommonJS', {
-    cwd: rootPath(),
+    cwd: Directories['~'],
     stdio: 'inherit'
   })
 
   console.log('Building UMD')
-  fs.mkdirSync(rootPath(`release/umd`), { recursive: true })
+  fs.mkdirSync(Directories['~/release/umd'], { recursive: true })
 
   const compiler = webpack({
     mode: 'production',
     devtool: false,
-    entry: rootPath(`lib/index.ts`),
+    entry: Directories['~/lib/index.ts'],
     output: {
       filename: 'index.js',
-      path: rootPath(`release/umd`),
+      path: Directories['~/release/umd'],
       publicPath: '/scripts',
       library: {
         type: 'umd',

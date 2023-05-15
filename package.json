@@ -1,6 +1,6 @@
 {
   "name": "@alshdavid/kit",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "exports": {
     "./*": {
@@ -29,7 +29,6 @@
   "devDependencies": {
     "@aws-sdk/client-cloudfront": "^3.332.0",
     "@aws-sdk/client-s3": "^3.332.0",
-    "@rspack/core": "^0.1.10",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^20.1.4",
     "http-server": "^14.1.1",
@@ -45,6 +44,7 @@
   "files": [
     "./release",
     "./package.json",
-    "./LICENSE"
+    "./LICENSE",
+    "README.md"
   ]
 }

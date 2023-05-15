@@ -11,25 +11,28 @@ jobs:
         node-version: [18.x]
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Build
         run: |
           npm install -g pnpm npm
           pnpm install
           pnpm run build
+
       - name: Publish to NPM
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ./.npmrc
-          cat ./.npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> $HOME/.npmrc
           pnpm publish --access public --no-git-checks
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Upload to AWS
         run: |
-          echo "coming soon"
+          npx ts-node ./.github/scripts/cmd/upload/main.ts
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

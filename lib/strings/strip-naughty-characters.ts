@@ -1,4 +1,4 @@
-export function removeNaughtyCharacters(text: string) {
+export function stripNaughtyCharacters(text: string) {
   return text
     .replaceAll('’', "'")
     .replaceAll(' ', ' ')

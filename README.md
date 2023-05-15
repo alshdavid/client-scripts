@@ -18,3 +18,4 @@ await import('https://cdn.alshdavid.com/scripts/kit.js')
 
 const foo = await acs.crypto.sha256('foo')
 ```
+

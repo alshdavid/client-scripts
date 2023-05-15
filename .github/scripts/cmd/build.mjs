@@ -62,7 +62,7 @@ void (async function main() {
     output: {
       filename: 'index.js',
       path: rootPath(`release/umd`),
-      publicPath: '',
+      publicPath: '/scripts',
       library: {
         type: 'umd',
         name: ['acs']

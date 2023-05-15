@@ -4,21 +4,25 @@ import * as semver from 'semver'
 import { Directories } from '../../platform/directores'
 
 type PackageInfo = {
-    version: string
+  version: string
 }
 
-void async function main() {
-    const packageInfo: PackageInfo = JSON.parse(child_process.execSync('pnpm info --json @alshdavid/kit').toString())
-    const localPackageInfo: PackageInfo = JSON.parse(fs.readFileSync(Directories['~/']('package.json'), { encoding: 'utf-8' }))
+void (async function main() {
+  const packageInfo: PackageInfo = JSON.parse(
+    child_process.execSync('pnpm info --json @alshdavid/kit').toString()
+  )
+  const localPackageInfo: PackageInfo = JSON.parse(
+    fs.readFileSync(Directories['~/']('package.json'), { encoding: 'utf-8' })
+  )
 
-    if (!semver.gt(localPackageInfo.version, packageInfo.version)) {
-        console.log('Skipping Publish')
-        return
-    }
+  if (!semver.gt(localPackageInfo.version, packageInfo.version)) {
+    console.log('Skipping Publish')
+    return
+  }
 
-    console.log('Publish')
-    child_process.execSync('pnpm publish --access public --no-git-checks', {
-        stdio: 'inherit',
-        cwd: Directories['~'],
-    })
-}()
+  console.log('Publish')
+  child_process.execSync('pnpm publish --access public --no-git-checks', {
+    stdio: 'inherit',
+    cwd: Directories['~']
+  })
+})()

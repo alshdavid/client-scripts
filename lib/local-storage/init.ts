@@ -1,5 +1,5 @@
 import { LocalStorageAsyncBrowser } from './local-storage-browser'
-import { isBrowser, isNode } from '../../platform/environment'
+import { isBrowser, isNode } from '../environment'
 import { ILocalStorageAsync } from './local-storage-interface'
 
 const GLOBAL_KEY = 'localStorageAsync'

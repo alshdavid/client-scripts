@@ -1,22 +1,12 @@
 {
   "name": "@alshdavid/kit",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "exports": {
     "./*": {
-      "types": "./release/types/*/lib/index.d.ts",
-      "import": "./release/esm/*/lib/index.js",
-      "require": "./release/require/*/lib/index.js"
-    },
-    "./lib/*": {
-      "types": "./release/types/*/lib/index.d.ts",
-      "import": "./release/esm/*/lib/index.js",
-      "require": "./release/require/*/lib/index.js"
-    },
-    "./platform/*": {
-      "types": "./release/types/*/platform/index.d.ts",
-      "import": "./release/esm/*/platform/index.js",
-      "require": "./release/require/*/platform/index.js"
+      "types": "./release/types/*/index.d.ts",
+      "import": "./release/esm/*/index.js",
+      "require": "./release/require/*/index.js"
     }
   },
   "scripts": {

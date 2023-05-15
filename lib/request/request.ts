@@ -1,4 +1,4 @@
-import { isNode } from '../../platform/environment'
+import { isNode } from '../environment'
 import { RequestOptions } from './interface/request-options'
 import * as browser from './browser/request'
 

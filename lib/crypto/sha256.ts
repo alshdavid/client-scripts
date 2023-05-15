@@ -1,4 +1,4 @@
-import { isNode } from '../../platform/environment'
+import { isNode } from '../environment'
 
 async function sha256Node(input: string): Promise<string> {
   const crypto = require('node:crypto')

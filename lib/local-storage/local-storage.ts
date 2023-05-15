@@ -1,4 +1,4 @@
-import { isBrowser, isNode } from '../../platform/environment'
+import { isBrowser, isNode } from '../environment'
 import { LocalStorageAsyncBrowser } from './local-storage-browser'
 import { ILocalStorageAsync } from './local-storage-interface'
 

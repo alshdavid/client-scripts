@@ -1,9 +1,9 @@
-import { RequestOptions } from "../interface/request-options"
-import { fetchCached } from "./fetch-cached"
+import { RequestOptions } from '../interface/request-options'
+import { fetchCached } from './fetch-cached'
 
 export async function request(
-  input: string, 
-  init: RequestOptions = {},
+  input: string,
+  init: RequestOptions = {}
 ): Promise<Response> {
   let fetchFunc: typeof window.fetch | typeof fetchCached
 
@@ -19,8 +19,8 @@ export async function request(
     if (response.status >= 200 && response.status <= 399) {
       return response
     }
-    
-    await new Promise(res => setTimeout(res, 5000))
+
+    await new Promise((res) => setTimeout(res, 5000))
   }
 
   throw new Error(`Too many retries: ${input}`)

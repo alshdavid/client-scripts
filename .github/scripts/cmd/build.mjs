@@ -37,25 +37,28 @@ void (async function main() {
 
   fs.mkdirSync(rootPath(`release/umd`), { recursive: true })
 
-  const snakeToCamel = (/** @type {string}*/ str) =>
-    str
-      .toLowerCase()
-      .replace(/([-_][a-z])/g, (group) =>
-        group.toUpperCase().replace('-', '').replace('_', '')
-      )
+  // const snakeToCamel = (/** @type {string}*/ str) =>
+  //   str
+  //     .toLowerCase()
+  //     .replace(/([-_][a-z])/g, (group) =>
+  //       group.toUpperCase().replace('-', '').replace('_', '')
+  //     )
 
-  let entry = ``
+  // let entry = ``
 
-  for (const foldernameRaw of fs.readdirSync(rootPath('lib'))) {
-    const foldername = snakeToCamel(foldernameRaw)
-    entry += `export * as ${foldername} from './lib/${foldernameRaw}/index.ts';\n`
-  }
+  // for (const foldernameRaw of fs.readdirSync(rootPath('lib'))) {
+  //   const foldername = snakeToCamel(foldernameRaw)
+  //   entry += `export * as ${foldername} from './lib/${foldernameRaw}/index.ts';\n`
+  // }
 
   // const compiler = rspack.rspack({
   const compiler = webpack({
     mode: 'production',
     devtool: false,
-    entry: `data:text/javascript;base64,${Buffer.from(entry).toString('base64')}`,
+    // entry: `data:text/javascript;base64,${Buffer.from(entry).toString(
+    //   'base64'
+    // )}`,
+    entry: rootPath(`lib/index.ts`),
     output: {
       filename: 'index.js',
       path: rootPath(`release/umd`),

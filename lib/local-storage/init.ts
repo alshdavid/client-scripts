@@ -6,7 +6,7 @@ const GLOBAL_KEY = 'localStorageAsync'
 
 export function init(storeKey?: string): ILocalStorageAsync {
   let globalKey = GLOBAL_KEY
-  
+
   if (storeKey) {
     globalKey += `_${storeKey}`
   }
@@ -23,7 +23,7 @@ export function init(storeKey?: string): ILocalStorageAsync {
 
   if (isNode()) {
     if (Reflect.has(global, globalKey)) {
-        return Reflect.get(global, globalKey)
+      return Reflect.get(global, globalKey)
     }
 
     const { LocalStorageAsyncNode } = require('./local-storage-node')

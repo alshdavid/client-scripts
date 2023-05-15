@@ -1,4 +1,4 @@
-import * as localStorage from "../../local-storage";
+import * as localStorage from '../../local-storage'
 
 export const DATABASE_KEY = 'request'
 
@@ -9,8 +9,8 @@ type CachedMeta = {
 }
 
 export async function fetchCached(
-  input: string, 
-  init: RequestInit,
+  input: string,
+  init: RequestInit
 ): Promise<Response> {
   if (init.method && init.method !== 'GET') {
     return fetch(input, init)
@@ -18,14 +18,14 @@ export async function fetchCached(
 
   const CacheKeys = {
     Meta: `fetch/${input}/meta`,
-    Body: `fetch/${input}/body`,
+    Body: `fetch/${input}/body`
   }
 
   const db = localStorage.init(DATABASE_KEY)
 
   const cachedMeta = await db.getItemJson<CachedMeta>(CacheKeys.Meta)
   const cachedBody = await db.getItem(CacheKeys.Body)
-  
+
   if (cachedMeta !== null && cachedBody !== null) {
     let buff = Buffer.from(cachedBody, 'base64')
     return new Response(buff, cachedMeta)
@@ -39,16 +39,16 @@ export async function fetchCached(
   const cacheEntry: CachedMeta = {
     status: response.status,
     statusText: response.statusText,
-    headers: {},
+    headers: {}
   }
 
-  response.headers.forEach((value, key) => cacheEntry.headers[key] = value)
-  
+  response.headers.forEach((value, key) => (cacheEntry.headers[key] = value))
+
   const body = await response.arrayBuffer()
 
   const buf = Buffer.from(body)
   await db.setItemJson(CacheKeys.Meta, cacheEntry)
   await db.setItem(CacheKeys.Body, buf.toString('base64'))
-  
+
   return new Response(body, response)
 }

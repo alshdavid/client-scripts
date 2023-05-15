@@ -13,18 +13,16 @@ const store = path.join(tempDir, 'local-storage')
 export class LocalStorageAsyncNode implements ILocalStorageAsync {
   #storeKey: string
 
-  constructor(
-    storeKey: string = '',
-  ) {
+  constructor(storeKey: string = '') {
     this.#storeKey = storeKey
   }
-  
+
   listItems(): Promise<string[]> {
     return fs.readdir(store)
   }
 
   close(): Promise<void> {
-      throw new Error('Method not implemented.')
+    throw new Error('Method not implemented.')
   }
 
   async getItem(key: string): Promise<string | null> {

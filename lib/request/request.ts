@@ -6,6 +6,9 @@ export async function request(
   input: RequestInfo,
   init: RequestOptions = {}
 ): Promise<Response> {
+  if (!input) {
+    throw new Error('No input provided')
+  }
   if (isNode()) {
     const { request } = require('./node/request')
     return request(input, init)

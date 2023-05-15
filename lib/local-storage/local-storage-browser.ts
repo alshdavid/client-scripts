@@ -1,4 +1,4 @@
-import { ILocalStorageAsync } from "./local-storage-interface"
+import { ILocalStorageAsync } from './local-storage-interface'
 
 const DATABASE_KEY = 'LocalStorageAsync'
 const DATABASE_STORE_KEY = 'default'
@@ -6,21 +6,19 @@ const DATABASE_STORE_KEY = 'default'
 export class LocalStorageAsyncBrowser implements ILocalStorageAsync {
   #database: Promise<IDBDatabase>
 
-  constructor(
-    storeKey: string = ''
-  ) {
+  constructor(storeKey: string = '') {
     let databaseName = DATABASE_KEY
     if (storeKey) {
       databaseName = `${DATABASE_KEY}:${storeKey}`
     }
-    
+
     const oRequest = indexedDB.open(databaseName)
-    
+
     oRequest.onupgradeneeded = function () {
       const db = oRequest.result
       db.createObjectStore(DATABASE_STORE_KEY)
     }
-    
+
     this.#database = new Promise<IDBDatabase>((resolve, reject) => {
       oRequest.onsuccess = function () {
         const db = oRequest.result
@@ -36,7 +34,7 @@ export class LocalStorageAsyncBrowser implements ILocalStorageAsync {
   async listItems(): Promise<string[]> {
     const db = await this.#database
     const tx = db.transaction(DATABASE_STORE_KEY, 'readonly')
-    
+
     const st = tx.objectStore(DATABASE_STORE_KEY)
     const gRequest = st.getAllKeys()
 
@@ -49,12 +47,12 @@ export class LocalStorageAsyncBrowser implements ILocalStorageAsync {
         reject(gRequest.error)
       }
     })
-  } 
+  }
 
   async getItem(key: string): Promise<string | null> {
     const db = await this.#database
     const tx = db.transaction(DATABASE_STORE_KEY, 'readonly')
-    
+
     const st = tx.objectStore(DATABASE_STORE_KEY)
     const gRequest = st.get(key)
 
@@ -76,10 +74,10 @@ export class LocalStorageAsyncBrowser implements ILocalStorageAsync {
   async setItem(key: string, value: string): Promise<void> {
     const db = await this.#database
     const tx = db.transaction(DATABASE_STORE_KEY, 'readwrite')
-    
+
     const st = tx.objectStore(DATABASE_STORE_KEY)
     const sRequest = st.put(value, key)
-    
+
     return new Promise((resolve, reject) => {
       sRequest.onsuccess = function () {
         resolve()
@@ -97,7 +95,7 @@ export class LocalStorageAsyncBrowser implements ILocalStorageAsync {
 
     const st = tx.objectStore(DATABASE_STORE_KEY)
     const rRequest = st.delete(key)
-    
+
     return new Promise((resolve, reject) => {
       rRequest.onsuccess = function () {
         resolve()

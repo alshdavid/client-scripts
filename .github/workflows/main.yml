@@ -20,8 +20,11 @@ jobs:
           npm install -g pnpm
           pnpm install
           pnpm run build
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+          pnpm publish --access public
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

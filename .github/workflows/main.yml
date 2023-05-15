@@ -17,12 +17,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Build
         run: |
-          npm install -g pnpm
+          npm install -g pnpm npm
           pnpm install
           pnpm run build
       - name: Publish to NPM
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ./.npmrc
+          cat ./.npmrc
           pnpm publish --access public --no-git-checks
       - name: Upload to AWS
         run: |

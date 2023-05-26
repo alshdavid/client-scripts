@@ -15,6 +15,9 @@ export const Directories = Object.freeze({
   ['~/release']: j('release'),
   ['~/release/']: s('release'),
 
+  ['~/release/cjs']: s('release', 'cjs'),
+  ['~/release/esm']: s('release', 'esm'),
+
   ['~/release/umd']: j('release/umd'),
   ['~/release/umd/index.js']: j('release/umd/index.js'),
 

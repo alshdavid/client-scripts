@@ -1,5 +1,5 @@
-import { RequestOptions } from '../interface/request-options'
-import { fetchCached } from './fetch-cached'
+import { RequestOptions } from '../interface/request-options.js'
+import { fetchCached } from './fetch-cached.js'
 
 export async function request(
   input: string,

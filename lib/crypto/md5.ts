@@ -1,4 +1,4 @@
-import { isNode } from '../environment'
+import { isNode } from '../environment/index.js'
 
 async function md5Node(input: string): Promise<string> {
   const crypto = require('node:crypto')

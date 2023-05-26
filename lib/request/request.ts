@@ -1,6 +1,6 @@
-import { isNode } from '../environment'
-import { RequestOptions } from './interface/request-options'
-import * as browser from './browser/request'
+import { isNode } from '../environment/index.js'
+import { RequestOptions } from './interface/request-options.js'
+import * as browser from './browser/request.js'
 
 export async function request(
   input: RequestInfo,

@@ -1,4 +1,4 @@
-import { stripNaughtyCharacters } from './strip-naughty-characters'
+import { stripNaughtyCharacters } from './strip-naughty-characters.js'
 
 const HeadingsWithProps = new RegExp('<h[1-6][^>].*?</h[1-6]>', 'g')
 const HeadingsWithoutProps = new RegExp('<h[1-6]>.*?</h[1-6]>', 'g')

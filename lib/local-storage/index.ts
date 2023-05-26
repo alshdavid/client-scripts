@@ -1,2 +1,2 @@
-export * from './init'
-export * from './local-storage'
+export * from './init.js'
+export * from './local-storage.js'

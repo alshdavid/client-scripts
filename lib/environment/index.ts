@@ -1,2 +1,2 @@
-export * from './is-browser'
-export * from './is-node'
+export * from './is-browser.js'
+export * from './is-node.js'

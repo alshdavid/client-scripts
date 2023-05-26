@@ -1,6 +1,6 @@
-import { isBrowser, isNode } from '../environment'
-import { LocalStorageAsyncBrowser } from './local-storage-browser'
-import { ILocalStorageAsync } from './local-storage-interface'
+import { isNode } from '../environment/index.js'
+import { LocalStorageAsyncBrowser } from './local-storage-browser.js'
+import { ILocalStorageAsync } from './local-storage-interface.js'
 
 export class LocalStorageAsync implements ILocalStorageAsync {
   #localStorageAsync: ILocalStorageAsync

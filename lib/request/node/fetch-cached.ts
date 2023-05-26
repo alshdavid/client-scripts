@@ -1,4 +1,4 @@
-import * as localStorage from '../../local-storage'
+import * as localStorage from '../../local-storage/index.js'
 
 export const DATABASE_KEY = 'request'
 

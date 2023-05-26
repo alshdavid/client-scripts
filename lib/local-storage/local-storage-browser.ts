@@ -1,4 +1,4 @@
-import { ILocalStorageAsync } from './local-storage-interface'
+import { ILocalStorageAsync } from './local-storage-interface.js'
 
 const DATABASE_KEY = 'LocalStorageAsync'
 const DATABASE_STORE_KEY = 'default'

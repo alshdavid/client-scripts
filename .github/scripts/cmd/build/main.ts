@@ -22,12 +22,14 @@ void (async function main() {
     cwd: Directories['~'],
     stdio: 'inherit'
   })
+  fs.writeFileSync(Directories['~/release/esm']('package.json'), JSON.stringify({ type: 'module' }, null, 2), 'utf8')
 
   console.log('Building CommonJS')
   child_process.execSync('npx tsc --outDir release/cjs --module CommonJS', {
     cwd: Directories['~'],
     stdio: 'inherit'
   })
+  fs.writeFileSync(Directories['~/release/cjs']('package.json'), JSON.stringify({ type: 'commonjs' }, null, 2), 'utf8')
 
   console.log('Building UMD')
   fs.mkdirSync(Directories['~/release/umd'], { recursive: true })
@@ -59,6 +61,10 @@ void (async function main() {
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.mjs'],
+      extensionAlias: {
+        '.js': ['.ts', '.js'],
+        '.mjs': ['.mts', '.mjs'],
+      },
       alias: {}
     },
     externals: [/^node:.*/i]

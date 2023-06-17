@@ -6,8 +6,7 @@
     "moduleResolution": "Node16",
     "declaration": false,
     "strict": true,
-    "lib": ["DOM", "ESNext"],
-    "types": ["node"]
+    "lib": ["DOM", "ESNext"]
   },
   "include": ["lib/**/*.ts", "platform/**/*.ts"]
 }

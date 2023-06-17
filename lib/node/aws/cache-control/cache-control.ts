@@ -7,16 +7,26 @@ export enum CacheControlType {
   NormalCache = 'max-age=86400, public',
 }
 
+export type CacheControlRule = {
+  regex: string | RegExp,
+  cacheControl: string | CacheControlType
+}
+
 export type CacheControlOptions = {
-  defaultCacheControl: string
-  rules: Array<{ regex: string | RegExp, cacheControl: string | CacheControlType }>
+  defaultCacheControl?: string
+  rules: Array<CacheControlRule>
 }
 
 export class CacheControl {
-  #settings: CacheControlOptions
+  #defaultCacheControl: string
+  #rules: Array<CacheControlRule>
 
-  constructor(settings: CacheControlOptions) {
-    this.#settings = settings
+  constructor({
+    defaultCacheControl = CacheControlType.NormalCache,
+    rules
+  }: CacheControlOptions) {
+    this.#defaultCacheControl = defaultCacheControl
+    this.#rules = rules
   }
 
   static async fromJsonFile(filePath: string) {
@@ -30,13 +40,12 @@ export class CacheControl {
   } 
 
   async getCacheControl(pathname: string): Promise<string> {
-    const settings = await this.#settings
-    for (const test of settings.rules) {
+    for (const test of this.#rules) {
       const r = typeof test.regex === 'string' ? new RegExp(test.regex) : test.regex
       if (pathname.match(r)) {
         return test.cacheControl
       }
     }
-    return settings.defaultCacheControl
+    return this.#defaultCacheControl
   }
 }

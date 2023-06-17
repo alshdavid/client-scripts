@@ -2,9 +2,9 @@ import * as fsSync from 'node:fs'
 import * as path from 'node:path'
 
 export enum TargetType {
-  FOLDER,
-  FILE,
-  LINK
+  FOLDER = 'FOLDER',
+  FILE = "FILE",
+  LINK = "LINK"
 }
 
 export type CrawlDirOptions = {

@@ -1,7 +1,7 @@
-import * as Bucket from './bucket/index.js'
-import * as CloudFront from './cloudfront/index.js'
-import * as CacheControl from './cache-control/index.js'
-import * as Local from './local/index.js'
+import * as Bucket from '../bucket/index.js'
+import * as CloudFront from '../cloudfront/index.js'
+import * as CacheControl from '../cache-control/index.js'
+import * as Local from '../local/index.js'
 
 export type SyncServiceOptions = {
   bucketService: Bucket.BucketService,

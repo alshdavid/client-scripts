@@ -17,11 +17,11 @@
     "watch": "npx nodemon --watch \"./lib/**/*\" --watch \"./platform/**/*\" --signal SIGTERM --ext \"*\" --exec \"node ./.github/scripts/cmd/build.mjs || exit 1\""
   },
   "dependencies": {
-    "@aws-sdk/client-cloudfront": "^3.354.0",
-    "@aws-sdk/client-s3": "^3.354.0",
-    "@types/mime-types": "^2.1.1",
-    "mime-types": "^2.1.35",
-    "yaml": "^2.3.1"
+    "@aws-sdk/client-cloudfront": "*",
+    "@aws-sdk/client-s3": "*",
+    "@types/mime-types": "*",
+    "mime-types": "*",
+    "yaml": "*"
   },
   "devDependencies": {
     "@types/node": "^20.3.1",

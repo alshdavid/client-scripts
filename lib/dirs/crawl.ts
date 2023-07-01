@@ -30,10 +30,6 @@ export function crawlDir({
       const relTargetPath = path.join(currentTargetPath, target)
       const stat = fsSync.lstatSync(relTargetPath)
 
-      if (dontCrawl.includes(target)) {
-        continue
-      }
-
       if (stat.isSymbolicLink()) {
         files.set(relTargetPath, TargetType.LINK)
         continue
@@ -46,6 +42,11 @@ export function crawlDir({
 
       if (stat.isDirectory()) {
         files.set(relTargetPath, TargetType.FOLDER)
+        
+        if (dontCrawl.includes(target)) {
+          continue
+        }
+        
         if (
           depth !== undefined &&
           currentDepth !== undefined &&
@@ -53,6 +54,7 @@ export function crawlDir({
         ) {
           continue
         }
+        
         currentDepth++
         innerCrawl(relTargetPath)
         currentDepth--

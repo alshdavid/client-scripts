@@ -2,8 +2,8 @@
   "compilerOptions": {
     "preserveWatchOutput": true,
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node16",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "declaration": false,
     "strict": true,
     "lib": ["DOM", "ESNext"],

@@ -26,3 +26,9 @@ globalThis.alshx['web'] = web
 globalThis.alshx['scripts'] = scripts
 // @ts-expect-error
 globalThis.alshx['request'] = request
+
+// @ts-expect-error
+if (typeof globalThis.alshx_main === 'function') {
+// @ts-expect-error
+  globalThis.alshx_main()
+}

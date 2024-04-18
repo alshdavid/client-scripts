@@ -464,10 +464,10 @@
   }
 
   // lib/browser/web/url-to-dom-template.ts
-  async function getPageDocument(url) {
-    const response = await request2(url);
+  async function getPageDocument(url, options) {
+    const response = await request2(url, options);
     const text = await response.text();
-    return [text, textToDomTemplate(text)];
+    return textToDomTemplate(text);
   }
 
   // lib/browser/web/iframe.ts
@@ -532,4 +532,7 @@
   globalThis.alshx["web"] = web_exports;
   globalThis.alshx["scripts"] = load_script_exports;
   globalThis.alshx["request"] = request_exports2;
+  if (typeof globalThis.alshx_main === "function") {
+    globalThis.alshx_main();
+  }
 })();

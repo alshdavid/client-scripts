@@ -363,7 +363,10 @@
   // lib/browser/web/index.ts
   var web_exports = {};
   __export(web_exports, {
+    createFrame: () => createFrame,
+    download: () => download,
     getPageDocument: () => getPageDocument,
+    sleep: () => sleep,
     textToDomTemplate: () => textToDomTemplate
   });
 
@@ -465,6 +468,44 @@
     const response = await request2(url);
     const text = await response.text();
     return [text, textToDomTemplate(text)];
+  }
+
+  // lib/browser/web/iframe.ts
+  async function createFrame(src, side) {
+    const frame = document.createElement("iframe");
+    frame.src = src;
+    frame.style.position = "fixed";
+    frame.style.display = "block";
+    frame.style.top = "0";
+    if (side === "r") {
+      frame.style.right = "0";
+    } else {
+      frame.style.left = "0";
+    }
+    frame.style.height = "50vh";
+    frame.style.width = "50vw";
+    frame.style.zIndex = "99999999999";
+    const onload = new Promise((res) => frame.onload = res);
+    document.body.appendChild(frame);
+    await onload;
+    const frameWindow = frame.contentWindow;
+    const frameDocument = frame.contentWindow.document;
+    const dispose = () => frame.parentElement.removeChild(frame);
+    return [frameWindow, frameDocument, dispose];
+  }
+
+  // lib/browser/web/sleep.ts
+  var sleep = (d) => new Promise((res) => setTimeout(res, d));
+
+  // lib/browser/web/download.ts
+  function download(filename, text) {
+    var element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 
   // lib/browser/load-script/index.ts

@@ -1,2 +1,5 @@
 export * from './text-to-dom-template.js'
 export * from './url-to-dom-template.js'
+export * from './iframe.js'
+export * from './sleep.js'
+export * from './download.js'

@@ -24,13 +24,13 @@ jobs:
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> $HOME/.npmrc
-          npx ts-node ./.github/scripts/cmd/publish/main.ts
+          node --import tsx ./.github/scripts/cmd/publish/main.ts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Upload to AWS
         run: |
-          npx ts-node ./.github/scripts/cmd/upload/main.ts
+          node --import tsx ./.github/scripts/cmd/upload/main.ts
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

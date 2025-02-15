@@ -3,7 +3,7 @@ import * as S3 from '@aws-sdk/client-s3'
 import { contentType } from 'mime-types'
 import * as path from 'node:path'
 import * as fs from 'node:fs'
-import * as paths from '../paths/index.js'
+import * as paths from '../../paths/index.js'
 
 export type PutFileOptions = {
   filepath: string

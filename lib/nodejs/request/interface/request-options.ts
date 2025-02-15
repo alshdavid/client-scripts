@@ -4,6 +4,6 @@ export type RequestOptions = RequestInit & {
 }
 
 export type RequestFunc = (
-  input: RequestInfo,
+  input: RequestInit,
   init?: RequestOptions
 ) => Promise<Response>

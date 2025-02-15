@@ -2,7 +2,7 @@ import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import { ILocalStorageAsync } from './local-storage-interface.js'
-import { sha1 } from '../crypto/index.js'
+import { sha1Sync } from '../crypto/index.js'
 
 const DATABASE_STORE_KEY = 'LocalStorageAsync.DatabaseStoreKey'
 
@@ -25,7 +25,7 @@ export class LocalStorageAsyncNode implements ILocalStorageAsync {
   }
 
   async getItem(key: string): Promise<string | null> {
-    const keySlug = await sha1(key)
+    const keySlug = await sha1Sync(key)
     const target = path.join(store, this.#storeKey, keySlug)
     if (!fsSync.existsSync(target)) {
       return null
@@ -34,7 +34,7 @@ export class LocalStorageAsyncNode implements ILocalStorageAsync {
   }
 
   async setItem(key: string, value: string): Promise<void> {
-    const keySlug = await sha1(key)
+    const keySlug = await sha1Sync(key)
     const target = path.join(store, this.#storeKey, keySlug)
     if (!fsSync.existsSync(store)) {
       await fs.mkdir(store, { recursive: true })
@@ -43,7 +43,7 @@ export class LocalStorageAsyncNode implements ILocalStorageAsync {
   }
 
   async removeItem(key: string): Promise<void> {
-    const keySlug = await sha1(key)
+    const keySlug = await sha1Sync(key)
     const target = path.join(store, this.#storeKey, keySlug)
     if (fsSync.existsSync(target)) {
       await fs.rm(target)

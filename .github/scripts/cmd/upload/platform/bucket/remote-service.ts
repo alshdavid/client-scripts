@@ -1,8 +1,8 @@
-import { DeleteItemsOptions, deleteItems } from './delete-items'
-import { GetFileListOptions, MD5Hash, getFileList } from './get-file-list'
-import { PutFileOptions, putFile } from './put-file'
-import { PutTextOptions, putText } from './put-text'
-import { RemoteOptions } from './remote-options'
+import { DeleteItemsOptions, deleteItems } from './delete-items.ts'
+import { GetFileListOptions, MD5Hash, getFileList } from './get-file-list.ts'
+import { PutFileOptions, putFile } from './put-file.ts'
+import { PutTextOptions, putText } from './put-text.ts'
+import { RemoteOptions } from './remote-options.ts'
 
 export class BucketService {
   readonly #remoteOptions: RemoteOptions

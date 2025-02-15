@@ -6,8 +6,8 @@
     "moduleResolution": "NodeNext",
     "declaration": false,
     "strict": true,
-    "lib": ["DOM", "ESNext"],
+    "lib": ["ESNext"],
     "types": ["node"]
   },
-  "include": ["lib/**/*.ts", "platform/**/*.ts"]
+  "include": ["**/*.ts"]
 }

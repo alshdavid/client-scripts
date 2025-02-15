@@ -2,9 +2,9 @@ import { S3Client } from '@aws-sdk/client-s3'
 import { CloudFrontClient } from '@aws-sdk/client-cloudfront'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
-import * as Remote from './platform/bucket'
-import * as CloudFront from './platform/cloudfront'
-import { Directories } from '../../platform/directores'
+import * as Remote from './platform/bucket/index.ts'
+import * as CloudFront from './platform/cloudfront/index.ts'
+import { Directories } from '../../platform/directores.ts'
 
 const DRY = process.env.DRY ? process.env.DRY === 'true' : false
 

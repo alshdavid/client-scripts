@@ -1,26 +1,36 @@
 import * as child_process from 'node:child_process'
 import * as fs from 'node:fs'
 import * as semver from 'semver'
-import { Directories } from '../../platform/directores'
+import { Directories } from '../../platform/directores.ts'
 
 type PackageInfo = {
   version: string
 }
 
 void (async function main() {
-  const packageInfo: PackageInfo = JSON.parse(
-    child_process.execSync('pnpm info --json @alshdavid/kit').toString()
-  )
+  const currentPackageVersion: string = child_process
+    .execSync('npm info @alshdavid/kit version')
+    .toString()
+  
   const localPackageInfo: PackageInfo = JSON.parse(
     fs.readFileSync(Directories['~/']('package.json'), { encoding: 'utf-8' })
   )
 
-  if (!semver.gt(localPackageInfo.version, packageInfo.version)) {
-    console.log('Skipping Publish')
+  let newVersion = semver.parse(currentPackageVersion)
+  if (!newVersion) {
+    newVersion = semver.parse('0.0.1')!
+  } else {
+    newVersion.inc("patch", '1')
+  }
+
+  localPackageInfo.version = newVersion.toString()
+  fs.writeFileSync(Directories['~/']('package.json'), JSON.stringify(localPackageInfo, null, 2), { encoding: 'utf-8' })
+
+  console.log('Publishing:', newVersion.toString())
+  if (process.env.AD_DRY === 'true') {
     return
   }
 
-  console.log('Publish')
   child_process.execSync('pnpm publish --access public --no-git-checks', {
     stdio: 'inherit',
     cwd: Directories['~']

@@ -1,7 +1,7 @@
 import * as path from 'node:path'
 import * as crypto from 'node:crypto'
 import * as fs from 'node:fs'
-import { crawlDir, TargetType } from '../../../dirs/index.js'
+import { crawlDir, TargetType } from './index.js'
 
 export enum HashMethod {
   SHA1 = 'sha1',

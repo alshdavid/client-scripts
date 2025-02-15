@@ -1,4 +1,7 @@
 import * as path from 'node:path'
+import * as url from 'node:url'
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 const rootPath = path.resolve(__dirname, '../../../')
 

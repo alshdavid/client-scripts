@@ -1,80 +1,91 @@
 import * as child_process from 'node:child_process'
 import * as fs from 'node:fs'
-import * as webpack from 'webpack'
-import { Directories } from '../../platform/directores'
+import { Directories } from '../../platform/directores.ts'
 
 void (async function main() {
   if (fs.existsSync(Directories['~/release'])) {
     fs.rmSync(Directories['~/release'], { recursive: true })
   }
 
-  console.log('Building Types')
+  console.log('Building Types (Web)')
   child_process.execSync(
-    'npx tsc --outDir release/types --declaration true --emitDeclarationOnly true',
+    'npx tsc --outDir ../../release/browser/types --declaration true --emitDeclarationOnly true',
     {
-      cwd: Directories['~'],
+      cwd: Directories['~/']('lib', 'browser'),
       stdio: 'inherit'
     }
   )
 
-  console.log('Building ESM')
-  child_process.execSync('npx tsc --outDir release/esm', {
-    cwd: Directories['~'],
-    stdio: 'inherit'
-  })
-  fs.writeFileSync(Directories['~/release/esm']('package.json'), JSON.stringify({ type: 'module' }, null, 2), 'utf8')
-
-  console.log('Building CommonJS')
-  child_process.execSync('npx tsc --outDir release/cjs --module CommonJS', {
-    cwd: Directories['~'],
-    stdio: 'inherit'
-  })
-  fs.writeFileSync(Directories['~/release/cjs']('package.json'), JSON.stringify({ type: 'commonjs' }, null, 2), 'utf8')
-
-  console.log('Building UMD')
-  fs.mkdirSync(Directories['~/release/umd'], { recursive: true })
-
-  const compiler = webpack({
-    mode: 'production',
-    devtool: false,
-    entry: Directories['~/lib/index.ts'],
-    output: {
-      filename: 'index.js',
-      path: Directories['~/release/umd'],
-      publicPath: '/scripts',
-      library: {
-        type: 'umd',
-        name: ['acs']
-      }
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          use: 'swc-loader'
-        },
-        {
-          test: /\.jsx?$/,
-          use: 'swc-loader'
-        }
-      ]
-    },
-    resolve: {
-      extensions: ['.tsx', '.ts', '.js', '.mjs'],
-      extensionAlias: {
-        '.js': ['.ts', '.js'],
-        '.mjs': ['.mts', '.mjs'],
-      },
-      alias: {}
-    },
-    externals: [/^node:.*/i]
-  })
-
-  const stat = await new Promise<webpack.Stats>((resolve, reject) =>
-    compiler.run((err, stats) =>
-      err ? reject(err) : stats ? resolve(stats) : reject()
-    )
+  console.log('Building Types (Nodejs)')
+  child_process.execSync(
+    'npx tsc --outDir ../../release/nodejs/types --declaration true --emitDeclarationOnly true',
+    {
+      cwd: Directories['~/']('lib', 'nodejs'),
+      stdio: 'inherit'
+    }
   )
 
-  console.log(stat.toString())
+  console.log('Building ESM (Web)')
+  child_process.execSync('npx tsc --outDir ../../release/browser/esm', {
+    cwd: Directories['~/']('lib', 'browser'),
+    stdio: 'inherit'
+  })
+
+  console.log('Building ESM (Nodejs)')
+  child_process.execSync('npx tsc --outDir ../../release/nodejs/esm', {
+    cwd: Directories['~/']('lib', 'nodejs'),
+    stdio: 'inherit'
+  })
+
+  fs.writeFileSync(Directories['~/release/']('nodejs', 'esm', 'package.json'), JSON.stringify({ type: 'module' }, null, 2), 'utf8')
+
+  console.log('Building ESM (Commonjs)')
+  child_process.execSync('npx tsc --outDir ../../release/nodejs/commonjs --module Commonjs --moduleResolution Node10', {
+    cwd: Directories['~/']('lib', 'nodejs'),
+    stdio: 'inherit'
+  })
+
+  fs.writeFileSync(Directories['~/release/']('nodejs', 'commonjs', 'package.json'), JSON.stringify({ type: 'commonjs' }, null, 2), 'utf8')
+
+  console.log('Package.json')
+  
+  const copy = [
+    ['package.json'],
+    ['README.md'],
+    ['LICENSE'],
+  ]
+
+  for (const target of copy) {
+    fs.cpSync(Directories['~/'](...target), Directories['~/release/'](...target))
+  }
+
+  const packageJson = JSON.parse(fs.readFileSync(Directories['~/release/']('package.json'), 'utf8'))
+  delete packageJson.workspaces
+  delete packageJson.scripts
+  delete packageJson.type
+  delete packageJson.private
+
+  packageJson.exports =  {
+    "./nodejs": {
+      "types": "./release/nodejs/types/index.d.ts",
+      "import": "./release/nodejs/esm/index.js",
+      "require": "./release/nodejs/commonjs/index.js",
+    },
+    "./nodejs/*": {
+      "types": "./release/nodejs/types/*/index.d.ts",
+      "import": "./release/nodejs/esm/*/index.js",
+      "require": "./release/nodejs/commonjs/*/index.js",
+    },
+    "./browser": {
+      "types": "./release/browser/types/index.d.ts",
+      "import": "./release/browser/esm/index.js",
+      "require": "./release/browser/commonjs/index.js",
+    },
+    "./browser/*": {
+      "types": "./release/browser/types/*/index.d.ts",
+      "import": "./release/browser/esm/*/index.js",
+    },
+  }
+
+  fs.writeFileSync(Directories['~/release/']('package.json'), JSON.stringify(packageJson, null, 2), 'utf8')
 })()

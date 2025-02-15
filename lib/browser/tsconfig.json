@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "preserveWatchOutput": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "declaration": false,
+    "strict": true,
+    "lib": ["DOM", "ESNext"],
+    "types": []
+  },
+  "include": ["**/*.ts"]
+}

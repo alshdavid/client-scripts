@@ -1,17 +1,11 @@
-import { isNode } from '../environment/index.js'
-import { LocalStorageAsyncBrowser } from './local-storage-browser.js'
+import { LocalStorageAsyncNode } from './local-storage-node.js'
 import { ILocalStorageAsync } from './local-storage-interface.js'
 
 export class LocalStorageAsync implements ILocalStorageAsync {
   #localStorageAsync: ILocalStorageAsync
 
   constructor(storeKey?: string) {
-    if (isNode()) {
-      const { LocalStorageAsyncNode } = require('./local-storage-node')
-      this.#localStorageAsync = new LocalStorageAsyncNode(storeKey)
-    } else {
-      this.#localStorageAsync = new LocalStorageAsyncBrowser(storeKey)
-    }
+    this.#localStorageAsync = new LocalStorageAsyncNode(storeKey)
   }
 
   listItems(): Promise<string[]> {

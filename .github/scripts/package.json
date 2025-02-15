@@ -1,0 +1,13 @@
+{
+  "name": "@alshdavid/kit-scripts",
+  "version": "0.0.0-local",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-cloudfront": "*",
+    "@aws-sdk/client-s3": "*",
+    "@types/node": "*",
+    "@types/semver": "*",
+    "semver": "*"
+  }
+}

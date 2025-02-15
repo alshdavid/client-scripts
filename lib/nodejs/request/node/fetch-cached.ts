@@ -9,7 +9,7 @@ type CachedMeta = {
 }
 
 export async function fetchCached(
-  input: string,
+  input: string | URL | globalThis.Request,
   init: RequestInit
 ): Promise<Response> {
   if (init.method && init.method !== 'GET') {

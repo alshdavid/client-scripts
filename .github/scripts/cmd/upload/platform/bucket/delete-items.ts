@@ -1,6 +1,6 @@
 import * as S3 from '@aws-sdk/client-s3'
-import { RemoteOptions } from './remote-options'
-import * as paths from '../paths'
+import { RemoteOptions } from './remote-options.ts'
+import * as paths from '../paths.ts'
 
 export type DeleteItemsOptions = {
   fileList: string[]

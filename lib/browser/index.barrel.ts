@@ -2,6 +2,7 @@ import fileSaver from 'file-saver'
 import path from 'path-browserify'
 
 export * as crypto from './crypto/index.js'
+export * as customElements from './custom-elements/index.js'
 export * as bytes from './bytes/index.js'
 export * as localStorage from './local-storage/index.js'
 export * as strings from './strings/index.js'

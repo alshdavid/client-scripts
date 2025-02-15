@@ -22,6 +22,7 @@ void (async function main() {
     entryPoints: [Directories['~/']('lib', 'browser', 'index.ts')],
     bundle: true,
     outdir: Directories['~/']('release', 'browser', 'esm'),
+    loader: { '.css': 'text' },
     format: 'esm'
   })
 
@@ -30,6 +31,7 @@ void (async function main() {
     entryPoints: [Directories['~/']('lib', 'browser', 'index.ts')],
     bundle: true,
     outdir: Directories['~/']('release', 'browser', 'iife'),
+    loader: { '.css': 'text' },
     format: 'iife'
   })
 

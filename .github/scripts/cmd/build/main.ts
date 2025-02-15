@@ -1,5 +1,6 @@
 import * as child_process from 'node:child_process'
 import * as fs from 'node:fs'
+import * as esbuild from 'esbuild'
 import { Directories } from '../../platform/directores.ts'
 
 void (async function main() {
@@ -7,7 +8,7 @@ void (async function main() {
     fs.rmSync(Directories['~/release'], { recursive: true })
   }
 
-  console.log('Building Types (Web)')
+  console.log('Building Web (Types)')
   child_process.execSync(
     'npx tsc --outDir ../../release/browser/types --declaration true --emitDeclarationOnly true',
     {
@@ -16,7 +17,23 @@ void (async function main() {
     }
   )
 
-  console.log('Building Types (Nodejs)')
+  console.log('Building Web (ESM)')
+  await esbuild.build({
+    entryPoints: [Directories['~/']('lib', 'browser', 'index.ts')],
+    bundle: true,
+    outdir: Directories['~/']('release', 'browser', 'esm'),
+    format: 'esm'
+  })
+
+  console.log('Building Web (IIFE)')
+  await esbuild.build({
+    entryPoints: [Directories['~/']('lib', 'browser', 'index.ts')],
+    bundle: true,
+    outdir: Directories['~/']('release', 'browser', 'iife'),
+    format: 'iife'
+  })
+
+  console.log('Building Nodejs (Types)')
   child_process.execSync(
     'npx tsc --outDir ../../release/nodejs/types --declaration true --emitDeclarationOnly true',
     {
@@ -24,14 +41,8 @@ void (async function main() {
       stdio: 'inherit'
     }
   )
-
-  console.log('Building ESM (Web)')
-  child_process.execSync('npx tsc --outDir ../../release/browser/esm', {
-    cwd: Directories['~/']('lib', 'browser'),
-    stdio: 'inherit'
-  })
-
-  console.log('Building ESM (Nodejs)')
+  
+  console.log('Building Nodejs (ESM)')
   child_process.execSync('npx tsc --outDir ../../release/nodejs/esm', {
     cwd: Directories['~/']('lib', 'nodejs'),
     stdio: 'inherit'
@@ -43,7 +54,7 @@ void (async function main() {
     'utf8'
   )
 
-  console.log('Building ESM (Commonjs)')
+  console.log('Building Nodejs (Commonjs)')
   child_process.execSync(
     'npx tsc --outDir ../../release/nodejs/commonjs --module Commonjs --moduleResolution Node10',
     {

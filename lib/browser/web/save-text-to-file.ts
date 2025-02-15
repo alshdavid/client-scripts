@@ -1,4 +1,4 @@
-export function download(filename: string, text: string) {
+export function saveTextToFile(filename: string, text: string) {
   var element = document.createElement('a')
   element.setAttribute(
     'href',

@@ -28,14 +28,11 @@ export async function fetchCached(input: RequestInfo, init: RequestOptions) {
     Body: `${hashedKey}_body`
   }
 
-  const db = localStorage.init(DATABASE_KEY)
-
-  const cachedMeta = await db.getItemJson(CacheKeys.Meta)
-  const cachedBody = await db.getItem(CacheKeys.Body)
+  const cachedMeta = await localStorage.getItemJson(CacheKeys.Meta)
+  const cachedBody = await localStorage.getItem<ArrayBuffer>(CacheKeys.Body)
 
   if (cachedMeta !== null && cachedBody !== null) {
-    let buff = base64ToArrayBuffer(cachedBody)
-    return new Response(buff, cachedMeta)
+    return new Response(cachedBody, cachedMeta)
   }
 
   const response = await fetch(input, init)
@@ -51,10 +48,9 @@ export async function fetchCached(input: RequestInfo, init: RequestOptions) {
 
   response.headers.forEach((value, key) => (cacheEntry.headers[key] = value))
   const ab = await response.arrayBuffer()
-  const b64 = ArrayBufferToBase64(ab)
 
-  await db.setItemJson(CacheKeys.Meta, cacheEntry)
-  await db.setItem(CacheKeys.Body, b64)
+  await localStorage.setItemJson(CacheKeys.Meta, cacheEntry)
+  await localStorage.setItem(CacheKeys.Body, ab)
 
   return new Response(ab, response)
 }

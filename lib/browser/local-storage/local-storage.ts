@@ -1,38 +1,36 @@
-import { LocalStorageAsyncBrowser } from './local-storage-browser.js'
-import { ILocalStorageAsync } from './local-storage-interface.js'
+import { Connection, DATABASE_DEFAULT_KEY } from './connection.js'
 
-export class LocalStorageAsync implements ILocalStorageAsync {
-  #localStorageAsync: ILocalStorageAsync
+const DEFAULT_CONNECTION: { ref: Connection | undefined } = { ref: undefined }
 
-  constructor(storeKey?: string) {
-    this.#localStorageAsync = new LocalStorageAsyncBrowser(storeKey)
+function getConn(): Connection {
+  if (!DEFAULT_CONNECTION.ref) {
+    DEFAULT_CONNECTION.ref = new Connection(DATABASE_DEFAULT_KEY)
   }
+  return DEFAULT_CONNECTION.ref
+}
 
-  listItems(): Promise<string[]> {
-    return this.#localStorageAsync.listItems()
-  }
+export function listItems(): Promise<string[]> {
+  return getConn().listItems()
+}
 
-  getItem(key: string): Promise<string | null> {
-    return this.#localStorageAsync.getItem(key)
-  }
+export function getItem<T extends string | ArrayBuffer | unknown = unknown>(
+  key: string
+): Promise<T | null> {
+  return getConn().getItem<T>(key)
+}
 
-  setItem(key: string, value: string): Promise<void> {
-    return this.#localStorageAsync.setItem(key, value)
-  }
+export function setItem(key: string, value: IDBValidKey): Promise<void> {
+  return getConn().setItem(key, value)
+}
 
-  removeItem(key: string): Promise<void> {
-    return this.#localStorageAsync.removeItem(key)
-  }
+export function removeItem(key: string): Promise<void> {
+  return getConn().removeItem(key)
+}
 
-  getItemJson<T = unknown>(key: string): Promise<T | null> {
-    return this.#localStorageAsync.getItemJson(key)
-  }
+export function getItemJson<T = unknown>(key: string): Promise<T | null> {
+  return getConn().getItemJson(key)
+}
 
-  setItemJson(key: string, value: any): Promise<void> {
-    return this.#localStorageAsync.setItemJson(key, value)
-  }
-
-  close(): Promise<void> {
-    return this.#localStorageAsync.close()
-  }
+export function setItemJson(key: string, value: any): Promise<void> {
+  return getConn().setItemJson(key, value)
 }

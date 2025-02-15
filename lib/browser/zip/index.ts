@@ -1,3 +1,3 @@
-import JSZip from 'jszip'
+import ZipFile from 'jszip'
 
-export { JSZip }
+export { ZipFile }

@@ -24,6 +24,7 @@ jobs:
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> $HOME/.npmrc
+          cd release
           npx ts-node ./.github/scripts/cmd/publish/main.ts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

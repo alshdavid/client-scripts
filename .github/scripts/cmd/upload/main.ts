@@ -18,44 +18,44 @@ const TARGET_NAME = process.env.BUCKET_BASE_PATH || 'kit.js'
 const TARGET_PATH = `${BUCKET_BASE_PATH}/${TARGET_NAME}`
 
 void (async function main() {
-  const cloudfront = new CloudFront.Cloudfront({
-    Client: new CloudFrontClient({ region: 'ap-southeast-2' }),
-    Distribution: DISTRIBUTION,
-    Dry: DRY
-  })
+  // const cloudfront = new CloudFront.Cloudfront({
+  //   Client: new CloudFrontClient({ region: 'ap-southeast-2' }),
+  //   Distribution: DISTRIBUTION,
+  //   Dry: DRY
+  // })
 
-  const bucket = new Remote.BucketService({
-    Client: new S3Client({ region: 'ap-southeast-2' }),
-    Bucket: BUCKET,
-    Dry: DRY
-  })
+  // const bucket = new Remote.BucketService({
+  //   Client: new S3Client({ region: 'ap-southeast-2' }),
+  //   Bucket: BUCKET,
+  //   Dry: DRY
+  // })
 
-  const remoteFileHash: string | undefined = (
-    await bucket.getFileList({ Prefix: TARGET_PATH })
-  )[TARGET_PATH]
+  // const remoteFileHash: string | undefined = (
+  //   await bucket.getFileList({ Prefix: TARGET_PATH })
+  // )[TARGET_PATH]
 
-  const fileBuffer = fs.readFileSync(Directories['~/release/umd/index.js'])
-  const localFileHash = crypto
-    .createHash('md5')
-    .update(fileBuffer)
-    .digest('hex')
+  // const fileBuffer = fs.readFileSync(Directories['~/release/umd/index.js'])
+  // const localFileHash = crypto
+  //   .createHash('md5')
+  //   .update(fileBuffer)
+  //   .digest('hex')
 
-  if (localFileHash === remoteFileHash) {
-    console.log('No change, skipping')
-    return
-  }
+  // if (localFileHash === remoteFileHash) {
+  //   console.log('No change, skipping')
+  //   return
+  // }
 
-  console.log('Uploading')
-  await bucket.putFile({
-    filepath: Directories['~/release/umd/index.js'],
-    keypath: TARGET_PATH,
-    cacheControl: CACHE_CONTROL
-  })
+  // console.log('Uploading')
+  // await bucket.putFile({
+  //   filepath: Directories['~/release/umd/index.js'],
+  //   keypath: TARGET_PATH,
+  //   cacheControl: CACHE_CONTROL
+  // })
 
-  console.log('Invalidating')
-  await cloudfront.invalidate({
-    patterns: [`/${TARGET_PATH}`]
-  })
+  // console.log('Invalidating')
+  // await cloudfront.invalidate({
+  //   patterns: [`/${TARGET_PATH}`]
+  // })
 
-  console.log('Done')
+  // console.log('Done')
 })()

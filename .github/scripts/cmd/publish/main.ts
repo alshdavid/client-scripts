@@ -33,6 +33,6 @@ void (async function main() {
 
   child_process.execSync('pnpm publish --access public --no-git-checks', {
     stdio: 'inherit',
-    cwd: Directories['~']
+    cwd: Directories['~/']('release')
   })
 })()

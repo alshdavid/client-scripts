@@ -1,7 +1,7 @@
-import { sha256 } from '../../crypto/index.js'
-import { ArrayBufferToBase64, base64ToArrayBuffer } from './base64.js'
-import * as localStorage from '../../local-storage/index.js'
-import { RequestOptions } from '../interface/request-options.js'
+import { sha256 } from '../crypto/index.js'
+import { ArrayBufferToBase64, base64ToArrayBuffer } from '../bytes/index.js'
+import * as localStorage from '../local-storage/index.js'
+import { RequestOptions } from './request-options.js'
 
 export const DATABASE_KEY = 'request'
 

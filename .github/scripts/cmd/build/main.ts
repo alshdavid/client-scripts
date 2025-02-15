@@ -41,7 +41,7 @@ void (async function main() {
       stdio: 'inherit'
     }
   )
-  
+
   console.log('Building Nodejs (ESM)')
   child_process.execSync('npx tsc --outDir ../../release/nodejs/esm', {
     cwd: Directories['~/']('lib', 'nodejs'),

@@ -89,24 +89,34 @@ void (async function main() {
   delete packageJson.private
 
   packageJson.exports = {
+    '.': {
+      types: './nodejs/types/index.d.ts',
+      import: './nodejs/esm/index.js',
+      require: './nodejs/commonjs/index.js'
+    },
+    './*': {
+      types: './nodejs/types/*/index.d.ts',
+      import: './nodejs/esm/*/index.js',
+      require: './nodejs/commonjs/*/index.js'
+    },
     './nodejs': {
-      types: './release/nodejs/types/index.d.ts',
-      import: './release/nodejs/esm/index.js',
-      require: './release/nodejs/commonjs/index.js'
+      types: './nodejs/types/index.d.ts',
+      import: './nodejs/esm/index.js',
+      require: './nodejs/commonjs/index.js'
     },
     './nodejs/*': {
-      types: './release/nodejs/types/*/index.d.ts',
-      import: './release/nodejs/esm/*/index.js',
-      require: './release/nodejs/commonjs/*/index.js'
+      types: './nodejs/types/*/index.d.ts',
+      import: './nodejs/esm/*/index.js',
+      require: './nodejs/commonjs/*/index.js'
     },
     './browser': {
-      types: './release/browser/types/index.d.ts',
-      import: './release/browser/esm/index.js',
-      require: './release/browser/commonjs/index.js'
+      types: './browser/types/index.d.ts',
+      import: './browser/esm/index.js',
+      require: './browser/commonjs/index.js'
     },
     './browser/*': {
-      types: './release/browser/types/*/index.d.ts',
-      import: './release/browser/esm/*/index.js'
+      types: './browser/types/*/index.d.ts',
+      import: './browser/esm/*/index.js'
     }
   }
 

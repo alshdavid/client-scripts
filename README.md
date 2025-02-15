@@ -15,7 +15,14 @@ void (async function main() {
 From the brower
 
 ```javascript
-await import('https://cdn.alshdavid.com/scripts/kit.js')
+const kit = await import(
+  'https://cdn.jsdelivr.net/npm/@alshdavid/kit@latest/browser/esm/index.js'
+)
 
-const foo = await acs.crypto.sha256('foo')
+await kit.localStorage.setItem('foo', 'bar')
+kit.log(await alshx.localStorage.getItem('foo'))
+
+// Also automatically added to globalThis
+await alshx.localStorage.setItem('foo', 'bar')
+console.log(await alshx.localStorage.getItem('foo'))
 ```

@@ -1,4 +1,4 @@
 packages:
-  - "./lib/browser"
-  - "./lib/nodejs"
-  - "./.github/scripts"
+  - './lib/browser'
+  - './lib/nodejs'
+  - './.github/scripts'

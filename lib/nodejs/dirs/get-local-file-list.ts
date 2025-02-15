@@ -6,7 +6,7 @@ import { crawlDir, TargetType } from './index.js'
 export enum HashMethod {
   SHA1 = 'sha1',
   SHA256 = 'sha256',
-  MD5 = 'md5',
+  MD5 = 'md5'
 }
 
 export type GetFileListOptions = {
@@ -26,7 +26,7 @@ export type GetFileListResults = Record<string, GetFileListResult>
 export function getFileList({
   folderPath,
   prefix,
-  hashMethod = HashMethod.MD5,
+  hashMethod = HashMethod.MD5
 }: GetFileListOptions): GetFileListResults {
   const fileList: GetFileListResults = {}
   const platformCwd = folderPath + path.sep
@@ -38,12 +38,15 @@ export function getFileList({
     if (prefix && !assetPath.startsWith(prefix)) continue
 
     const fileBuffer = fs.readFileSync(absolutePath)
-    const result = crypto.createHash(hashMethod).update(fileBuffer).digest('hex')
-    
+    const result = crypto
+      .createHash(hashMethod)
+      .update(fileBuffer)
+      .digest('hex')
+
     fileList[assetPath] = {
       keyPath: assetPath,
       fullPath: absolutePath,
-      hash: result,
+      hash: result
     }
   }
 

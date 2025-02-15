@@ -37,55 +37,71 @@ void (async function main() {
     stdio: 'inherit'
   })
 
-  fs.writeFileSync(Directories['~/release/']('nodejs', 'esm', 'package.json'), JSON.stringify({ type: 'module' }, null, 2), 'utf8')
+  fs.writeFileSync(
+    Directories['~/release/']('nodejs', 'esm', 'package.json'),
+    JSON.stringify({ type: 'module' }, null, 2),
+    'utf8'
+  )
 
   console.log('Building ESM (Commonjs)')
-  child_process.execSync('npx tsc --outDir ../../release/nodejs/commonjs --module Commonjs --moduleResolution Node10', {
-    cwd: Directories['~/']('lib', 'nodejs'),
-    stdio: 'inherit'
-  })
+  child_process.execSync(
+    'npx tsc --outDir ../../release/nodejs/commonjs --module Commonjs --moduleResolution Node10',
+    {
+      cwd: Directories['~/']('lib', 'nodejs'),
+      stdio: 'inherit'
+    }
+  )
 
-  fs.writeFileSync(Directories['~/release/']('nodejs', 'commonjs', 'package.json'), JSON.stringify({ type: 'commonjs' }, null, 2), 'utf8')
+  fs.writeFileSync(
+    Directories['~/release/']('nodejs', 'commonjs', 'package.json'),
+    JSON.stringify({ type: 'commonjs' }, null, 2),
+    'utf8'
+  )
 
   console.log('Package.json')
-  
-  const copy = [
-    ['package.json'],
-    ['README.md'],
-    ['LICENSE'],
-  ]
+
+  const copy = [['package.json'], ['README.md'], ['LICENSE']]
 
   for (const target of copy) {
-    fs.cpSync(Directories['~/'](...target), Directories['~/release/'](...target))
+    fs.cpSync(
+      Directories['~/'](...target),
+      Directories['~/release/'](...target)
+    )
   }
 
-  const packageJson = JSON.parse(fs.readFileSync(Directories['~/release/']('package.json'), 'utf8'))
+  const packageJson = JSON.parse(
+    fs.readFileSync(Directories['~/release/']('package.json'), 'utf8')
+  )
   delete packageJson.workspaces
   delete packageJson.scripts
   delete packageJson.type
   delete packageJson.private
 
-  packageJson.exports =  {
-    "./nodejs": {
-      "types": "./release/nodejs/types/index.d.ts",
-      "import": "./release/nodejs/esm/index.js",
-      "require": "./release/nodejs/commonjs/index.js",
+  packageJson.exports = {
+    './nodejs': {
+      types: './release/nodejs/types/index.d.ts',
+      import: './release/nodejs/esm/index.js',
+      require: './release/nodejs/commonjs/index.js'
     },
-    "./nodejs/*": {
-      "types": "./release/nodejs/types/*/index.d.ts",
-      "import": "./release/nodejs/esm/*/index.js",
-      "require": "./release/nodejs/commonjs/*/index.js",
+    './nodejs/*': {
+      types: './release/nodejs/types/*/index.d.ts',
+      import: './release/nodejs/esm/*/index.js',
+      require: './release/nodejs/commonjs/*/index.js'
     },
-    "./browser": {
-      "types": "./release/browser/types/index.d.ts",
-      "import": "./release/browser/esm/index.js",
-      "require": "./release/browser/commonjs/index.js",
+    './browser': {
+      types: './release/browser/types/index.d.ts',
+      import: './release/browser/esm/index.js',
+      require: './release/browser/commonjs/index.js'
     },
-    "./browser/*": {
-      "types": "./release/browser/types/*/index.d.ts",
-      "import": "./release/browser/esm/*/index.js",
-    },
+    './browser/*': {
+      types: './release/browser/types/*/index.d.ts',
+      import: './release/browser/esm/*/index.js'
+    }
   }
 
-  fs.writeFileSync(Directories['~/release/']('package.json'), JSON.stringify(packageJson, null, 2), 'utf8')
+  fs.writeFileSync(
+    Directories['~/release/']('package.json'),
+    JSON.stringify(packageJson, null, 2),
+    'utf8'
+  )
 })()

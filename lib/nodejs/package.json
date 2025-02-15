@@ -1,17 +1,17 @@
 {
-    "name": "@alshdavid/kit-nodejs",
-    "version": "0.0.0-local",
-    "license": "MIT",
-    "type": "module",
-    "dependencies": {
-      "@aws-sdk/client-cloudfront": "*",
-      "@aws-sdk/client-s3": "*",
-      "@types/mime-types": "*",
-      "m3u8-parser": "*",
-      "mime-types": "*",
-      "yaml": "*"
-    },
-    "devDependencies": {
-      "@types/node": "*"
-    }
+  "name": "@alshdavid/kit-nodejs",
+  "version": "0.0.0-local",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-cloudfront": "*",
+    "@aws-sdk/client-s3": "*",
+    "@types/mime-types": "*",
+    "m3u8-parser": "*",
+    "mime-types": "*",
+    "yaml": "*"
+  },
+  "devDependencies": {
+    "@types/node": "*"
   }
+}

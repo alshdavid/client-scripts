@@ -23,39 +23,32 @@ void (async function main() {
   //   Distribution: DISTRIBUTION,
   //   Dry: DRY
   // })
-
   // const bucket = new Remote.BucketService({
   //   Client: new S3Client({ region: 'ap-southeast-2' }),
   //   Bucket: BUCKET,
   //   Dry: DRY
   // })
-
   // const remoteFileHash: string | undefined = (
   //   await bucket.getFileList({ Prefix: TARGET_PATH })
   // )[TARGET_PATH]
-
   // const fileBuffer = fs.readFileSync(Directories['~/release/umd/index.js'])
   // const localFileHash = crypto
   //   .createHash('md5')
   //   .update(fileBuffer)
   //   .digest('hex')
-
   // if (localFileHash === remoteFileHash) {
   //   console.log('No change, skipping')
   //   return
   // }
-
   // console.log('Uploading')
   // await bucket.putFile({
   //   filepath: Directories['~/release/umd/index.js'],
   //   keypath: TARGET_PATH,
   //   cacheControl: CACHE_CONTROL
   // })
-
   // console.log('Invalidating')
   // await cloudfront.invalidate({
   //   patterns: [`/${TARGET_PATH}`]
   // })
-
   // console.log('Done')
 })()

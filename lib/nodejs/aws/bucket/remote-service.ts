@@ -15,7 +15,7 @@ export type BucketServiceOptions = {
 export class BucketService {
   readonly #remoteOptions: RemoteOptions
 
-  constructor({ 
+  constructor({
     Client = new S3Client({}),
     Bucket,
     Dry

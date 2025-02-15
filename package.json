@@ -9,7 +9,7 @@
     "./.github/scripts"
   ],
   "scripts": {
-    "prettier": "npx prettier -w .",
+    "fmt": "npx prettier -w .",
     "build": "node --import tsx ./.github/scripts/cmd/build/main.ts",
     "clean": "rm -rf release",
     "serve": "npx http-server -c=-1 --cors=true ./release/umd",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "typescript": "*",
+    "prettier": "*",
     "nodemon": "*",
     "tsx": "*"
   }

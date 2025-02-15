@@ -9,22 +9,28 @@ type PackageInfo = {
 
 void (async function main() {
   const currentPackageVersion: string = child_process
-    .execSync('npm info @alshdavid/kit version')
+    .execSync('npm info @alshdavid/kit@latest version')
     .toString()
-  
+
   let newVersion = semver.parse(currentPackageVersion)
   if (!newVersion) {
     newVersion = semver.parse('0.0.1')!
   } else {
-    newVersion.inc("patch", '1')
+    newVersion.inc('patch', '1')
   }
 
   const localPackageInfo: PackageInfo = JSON.parse(
-    fs.readFileSync(Directories['~/']('release', 'package.json'), { encoding: 'utf-8' })
+    fs.readFileSync(Directories['~/']('release', 'package.json'), {
+      encoding: 'utf-8'
+    })
   )
 
   localPackageInfo.version = newVersion.toString()
-  fs.writeFileSync(Directories['~/']('release', 'package.json'), JSON.stringify(localPackageInfo, null, 2), { encoding: 'utf-8' })
+  fs.writeFileSync(
+    Directories['~/']('release', 'package.json'),
+    JSON.stringify(localPackageInfo, null, 2),
+    { encoding: 'utf-8' }
+  )
 
   console.log('Publishing:', newVersion.toString())
   if (process.env.AD_DRY === 'true') {

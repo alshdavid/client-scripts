@@ -1,9 +1,11 @@
-
 ```javascript
 import { SyncService } from '@alshdavid/kit/node/aws/sync.js'
 import { BucketService } from '@alshdavid/kit/node/aws/bucket/index.js'
 import { Cloudfront } from '@alshdavid/kit/node/aws/cloudfront/index.js'
-import { CacheControl, CacheControlType } from '@alshdavid/kit/node/aws/cache-control/index.js'
+import {
+  CacheControl,
+  CacheControlType
+} from '@alshdavid/kit/node/aws/cache-control/index.js'
 
 async function main() {
   // Rules are in order
@@ -16,7 +18,7 @@ async function main() {
     {
       regex: new RegExp('^(\/)(.*)(\.css|js|html)$'),
       cacheControl: CacheControlType.Immutable
-    },
+    }
   ]
 
   const LOCAL_STATIC_FILES = '/home/username/path/to/static/dist'
@@ -27,7 +29,11 @@ async function main() {
   const bucketService = new BucketService({ Bucket: S3_BUCKET_NAME })
   const cloudFrontService = new Cloudfront({ Distribution: CF_DISTRIBUTION })
   const cacheControl = new CacheControl({ rules: CacheControlRules })
-  const sync = new SyncService({ bucketService, cloudFrontService, cacheControl })
+  const sync = new SyncService({
+    bucketService,
+    cloudFrontService,
+    cacheControl
+  })
 
   // You can add multiple folders
   await sync.addLocalFolder(LOCAL_STATIC_FILES)

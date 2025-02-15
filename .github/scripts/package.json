@@ -8,6 +8,8 @@
     "@aws-sdk/client-s3": "*",
     "@types/node": "*",
     "@types/semver": "*",
-    "semver": "*"
+    "@types/mime-types": "*",
+    "semver": "*",
+    "mime-types": "*"
   }
 }

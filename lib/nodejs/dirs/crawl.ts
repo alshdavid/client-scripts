@@ -3,8 +3,8 @@ import * as path from 'node:path'
 
 export enum TargetType {
   FOLDER = 'FOLDER',
-  FILE = "FILE",
-  LINK = "LINK"
+  FILE = 'FILE',
+  LINK = 'LINK'
 }
 
 export type CrawlDirOptions = {
@@ -42,11 +42,11 @@ export function crawlDir({
 
       if (stat.isDirectory()) {
         files.set(relTargetPath, TargetType.FOLDER)
-        
+
         if (dontCrawl.includes(target)) {
           continue
         }
-        
+
         if (
           depth !== undefined &&
           currentDepth !== undefined &&
@@ -54,7 +54,7 @@ export function crawlDir({
         ) {
           continue
         }
-        
+
         currentDepth++
         innerCrawl(relTargetPath)
         currentDepth--

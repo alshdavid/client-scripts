@@ -4,9 +4,9 @@ import * as CacheControl from '../../cache-control/index.js'
 import * as Local from '../../dirs/index.js'
 
 export type SyncServiceOptions = {
-  bucketService: Bucket.BucketService,
-  cacheControl?: CacheControl.CacheControl | CacheControl.CacheControlType,
-  cloudFrontService?: CloudFront.Cloudfront,
+  bucketService: Bucket.BucketService
+  cacheControl?: CacheControl.CacheControl | CacheControl.CacheControlType
+  cloudFrontService?: CloudFront.Cloudfront
 }
 
 export class SyncService {
@@ -24,10 +24,11 @@ export class SyncService {
   constructor({
     bucketService,
     cacheControl,
-    cloudFrontService,
+    cloudFrontService
   }: SyncServiceOptions) {
     this.#bucketService = bucketService
-    this.#cacheControl = cacheControl || CacheControl.CacheControlType.NormalCache
+    this.#cacheControl =
+      cacheControl || CacheControl.CacheControlType.NormalCache
     this.#cloudFrontService = cloudFrontService
     this.#localFileList = {}
     this.#remoteFileHashes = {}
@@ -38,10 +39,10 @@ export class SyncService {
     this.#committed = false
   }
 
-  async addLocalFolder(folderPath: string, prefix? :string) {
-    this.#localFileList = { 
+  async addLocalFolder(folderPath: string, prefix?: string) {
+    this.#localFileList = {
       ...this.#localFileList,
-      ...Local.getFileList({ folderPath, prefix }) 
+      ...Local.getFileList({ folderPath, prefix })
     }
   }
 
@@ -55,9 +56,9 @@ export class SyncService {
 
     if (!this.#bucketPrefixes.length) this.#bucketPrefixes.push('')
     for (const bucketPrefix of this.#bucketPrefixes) {
-      this.#remoteFileHashes = { 
+      this.#remoteFileHashes = {
         ...this.#remoteFileHashes,
-        ...await this.#bucketService.getFileList({ Prefix: bucketPrefix }),
+        ...(await this.#bucketService.getFileList({ Prefix: bucketPrefix }))
       }
     }
 
@@ -71,10 +72,10 @@ export class SyncService {
       await this.#bucketService.putFile({
         filepath: file.fullPath,
         keypath: file.keyPath,
-        cacheControl,
+        cacheControl
       })
     }
-  
+
     for (const keyPath of this.#toUpdateList) {
       const file = this.#localFileList[keyPath]
       const cacheControl = await this.#getCacheControl('/' + keyPath)
@@ -82,19 +83,19 @@ export class SyncService {
       await this.#bucketService.putFile({
         filepath: file.fullPath,
         keypath: file.keyPath,
-        cacheControl,
+        cacheControl
       })
     }
-  
+
     for (const keyPath of this.#toDeleteList) {
       yield { action: 'DEL', key: keyPath }
     }
-  
+
     await this.#bucketService.deleteItems({
-      fileList: this.#toDeleteList,
+      fileList: this.#toDeleteList
     })
   }
-  
+
   async invalidate() {
     if (!this.#committed) return
     if (!this.#cloudFrontService) return
@@ -102,9 +103,9 @@ export class SyncService {
 
     await this.#cloudFrontService.invalidate({
       patterns: [
-        ...this.#toPutList.map(p => `/${p}`),
-        ...this.#toUpdateList.map(p => `/${p}`),
-        ...this.#toDeleteList.map(p => `/${p}`),
+        ...this.#toPutList.map((p) => `/${p}`),
+        ...this.#toUpdateList.map((p) => `/${p}`),
+        ...this.#toDeleteList.map((p) => `/${p}`)
       ]
     })
   }
@@ -114,7 +115,7 @@ export class SyncService {
     return {
       toPut: this.#toPutList.slice(),
       toUpdate: this.#toUpdateList.slice(),
-      toDelete: this.#toDeleteList.slice(),
+      toDelete: this.#toDeleteList.slice()
     }
   }
 

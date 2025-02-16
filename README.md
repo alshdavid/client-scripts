@@ -12,7 +12,7 @@ void (async function main() {
 })()
 ```
 
-From the brower
+From the browser
 
 ```javascript
 const kit = await import(
@@ -25,4 +25,24 @@ kit.log(await alshx.localStorage.getItem('foo'))
 // Also automatically added to globalThis
 await alshx.localStorage.setItem('foo', 'bar')
 console.log(await alshx.localStorage.getItem('foo'))
+```
+
+```html
+<script type="importmap">
+{
+  "imports": {
+    "@alshx/kit/": "https://cdn.jsdelivr.net/npm/@alshdavid/kit@latest/browser/esm/"
+  }
+}
+</script>
+
+<script type="module">
+  import * as preact from '@alshx/kit/preact.js'
+  console.log(preact)
+</script>
+
+<script type="module">
+  import * as kit from '@alshx/kit/index.js'
+  console.log(kit)
+</script>
 ```

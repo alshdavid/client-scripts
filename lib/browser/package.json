@@ -11,6 +11,8 @@
     "jszip": "*",
     "m3u8-parser": "*",
     "mime-types": "*",
-    "path-browserify": "*"
+    "path-browserify": "*",
+    "preact": "*",
+    "htm": "*"
   }
 }

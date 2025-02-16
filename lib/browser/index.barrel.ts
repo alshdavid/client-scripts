@@ -9,6 +9,9 @@ export * as strings from './strings/index.js'
 export * as web from './web/index.js'
 export * as m3u8 from './m3u8/index.js'
 export * as zip from './zip/index.js'
+export * as rxjs from './rxjs/index.js'
+export * as preact from './preact/index.js'
+export * as htm from './htm/index.js'
 export * from './fetch/index.js'
 export { path }
 export { fileSaver }

@@ -21,19 +21,43 @@ void (async function main() {
   await esbuild.build({
     entryPoints: [Directories['~/']('lib', 'browser', 'index.ts')],
     bundle: true,
-    outdir: Directories['~/']('release', 'browser', 'esm'),
+    outfile: Directories['~/']('release', 'browser', 'esm', 'index.js'),
     loader: { '.css': 'text' },
     format: 'esm'
   })
+
+  for (const dir of fs.readdirSync(Directories['~/lib/']('browser'))) {
+    if (dir === 'node_modules') continue
+    if (!fs.existsSync(Directories['~/lib/']('browser', dir, 'index.ts'))) continue
+    await esbuild.build({
+      entryPoints: [Directories['~/']('lib', 'browser', dir, 'index.ts')],
+      bundle: true,
+      outfile: Directories['~/']('release', 'browser', 'esm', dir + '.js'),
+      loader: { '.css': 'text' },
+      format: 'esm'
+    })
+  }
 
   console.log('Building Web (IIFE)')
   await esbuild.build({
     entryPoints: [Directories['~/']('lib', 'browser', 'index.ts')],
     bundle: true,
-    outdir: Directories['~/']('release', 'browser', 'iife'),
+    outfile: Directories['~/']('release', 'browser', 'iife', 'index.js'),
     loader: { '.css': 'text' },
     format: 'iife'
   })
+
+  for (const dir of fs.readdirSync(Directories['~/lib/']('browser'))) {
+    if (dir === 'node_modules') continue
+    if (!fs.existsSync(Directories['~/lib/']('browser', dir, 'index.ts'))) continue
+    await esbuild.build({
+      entryPoints: [Directories['~/']('lib', 'browser', dir, 'index.ts')],
+      bundle: true,
+      outfile: Directories['~/']('release', 'browser', 'iife', dir + '.js'),
+      loader: { '.css': 'text' },
+      format: 'esm'
+    })
+  }
 
   console.log('Building Nodejs (Types)')
   child_process.execSync(
